@@ -9,7 +9,12 @@ var mongoose = require('mongoose');
 var request = require('request');
 var cheerio = require('cheerio');
 
-// use morgan and bodyparser with our app
+// Handlebars
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+// use morgan and bodyparser with this app
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
   extended: false
@@ -39,7 +44,7 @@ var Article = require('./models/Article.js');
 // Routes
 // Index route
 app.get('/', function(req, res) {
-  res.send(index.html);
+  res.render('index');
 });
 
 // Scrape route
