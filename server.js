@@ -1,18 +1,11 @@
 // Dependencies
-var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
-// Require request and cheerio to make the scraping possible
-var request = require('request');
-var cheerio = require('cheerio');
-
-// Handlebars
-var exphbs = require('express-handlebars');
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
+// initialize express app
+var express = require('express');
+var app = express();
 
 // use morgan and bodyparser with this app
 app.use(logger('dev'));
@@ -21,7 +14,12 @@ app.use(bodyParser.urlencoded({
 }));
 
 // make public a static dir
-app.use(express.static('public'));
+app.use(express.static(process.cwd() + '/public'));
+
+// Handlebars
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 // Database configuration with mongoose
 mongoose.connect('mongodb://localhost/newsCommentator');
@@ -37,88 +35,12 @@ db.once('open', function() {
   console.log('Mongoose connection successful.');
 });
 
-// And we bring in our Note and Article models
-var Note = require('./models/Note.js');
-var Article = require('./models/Article.js');
-
-// Routes
-// Index route
-app.get('/', function(req, res) {
-  res.render('index');
-});
-
-// Scrape route
-app.get('/scrape', function(req, res){
-  request('http://www.developer-tech.com/', function(error, response, html){
-    var $ = cheerio.load(html);
-    $('article h3').each(function(i, element){
-      var result = {};
-
-      result.title = $(this).children('a').text();
-      result.link = $(this).children('a').attr('href');
-
-      var newArticle = new Article (result);
-
-      newArticle.save(function(err, doc){
-        if(err){
-          console.log(err);
-        }
-        else{
-          console.log(doc);
-        }
-      });
-    });
-  });
-  res.send("Scrape has been performed!");
-});
-
-app.get('/articles', function(req, res){
-  Article.find({}, function(err, doc){
-    if(err){
-      console.log(err);
-    }
-    else{
-      res.json(doc);
-    }
-  });
-});
-
-app.get('/articles/:id', function(req, res){
-  Article.findOne({'_id': req.params.id})
-
-  .populate('note')
-  .exec(function(err, doc){
-    if(err){
-      console.log(err);
-    }
-    else{
-      res.json(doc);
-    }
-  });
-});
-
-app.post('/articles/:id', function(req, res){
-  var newNote = new Note(req.body);
-  newNote.save(function(err, doc){
-    if(err){
-      console.log(err);
-    }
-    else{
-      Article.findOneAndUpdate({'_id': req.params.id}, {'note':doc._id})
-
-      .exec(function(err, doc){
-        if(err){
-          console.log(err);
-        }
-        else{
-          res.send(doc);
-        }
-      });
-    }
-  });
-});
+// import routes
+var routes = require('./controller/controller.js');
+app.use('/', routes);
 
 // listen on port 3000
-app.listen(3000, function() {
+var port = process.env.PORT || 3000
+app.listen(port, function() {
   console.log('The magic happens on port 3000!');
 });

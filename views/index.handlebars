@@ -1,7 +1,11 @@
-<main>
-  <div id="wrapper">
-    <h1>News Commentator</h1>
-    <div id="articles"></div>
-    <div id="notes"></div>
+
+<div id="wrapper">
+  <h1>News Commentator</h1>
+  <div id="articles">
+    {{#each article_}}
+    <h3>{{this.title}}</h3>
+    {{/each}}
   </div>
-</main>
+  <div id="notes"></div>
+</div>
+

@@ -1,11 +1,14 @@
+//Grabing articles as JSON
 $.getJSON('/articles', function(data){
   for(var i=0; i<data.length; i++){
     $('#articles').append('<p data-id="' + data[i]._id + '">' + data[i].title + '<br />' + data[i].link + '</p>');
   }
 });
 
+// On click function that executes when user clicks a p tag
 $(document).on('click', 'p', function(){
   $('#notes').empty();
+
   var thisId = $(this).attr('data-id');
 
   $.ajax({
@@ -27,6 +30,7 @@ $(document).on('click', 'p', function(){
     });
 });
 
+// Function that executes when user clicks on addnote button
 $(document).on('click', '#addnote', function(){
   var thisId = $(this).attr('data-id');
 
