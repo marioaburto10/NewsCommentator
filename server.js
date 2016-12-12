@@ -21,9 +21,18 @@ var exphbs = require('express-handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-// Database configuration with mongoose
-mongoose.connect('mongodb://localhost/newsCommentator');
+// Connect to localhost if not a production environment
+if(process.env.NODE_ENV == 'production'){
+  mongoose.connect('mongodb://heroku_jbhd2g50:jka4o832drmkr2beermnedo05d@ds127878.mlab.com:27878/heroku_jbhd2g50');
+}
+else{
+  mongoose.connect('mongodb://localhost/newsCommentator');
+}
 var db = mongoose.connection;
+
+// // Database configuration with mongoose
+// mongoose.connect('mongodb://localhost/newsCommentator');
+// var db = mongoose.connection;
 
 // show any mongoose errors
 db.on('error', function(err) {

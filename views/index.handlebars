@@ -1,11 +1,24 @@
+<h1>News Commentator</h1>
 
-<div id="wrapper">
-  <h1>News Commentator</h1>
-  <div id="articles">
-    {{#each article_}}
-    <h3>{{this.title}}</h3>
-    {{/each}}
-  </div>
-  <div id="notes"></div>
-</div>
-
+{{!-- iterate through articles --}}
+{{#each articles}}
+  {{!-- <ul> --}}
+     {{!-- <li> --}}
+        <div {{!-- id="articles" --}} style=" float: left">
+          <h3 data-id="{{_id}}">{{title}}</h3>
+          <br>
+          <p data-id="{{_id}}">{{link}}</p>
+        </div>
+      {{!-- </li> --}}
+      {{!-- <li> --}}
+        <div id="notes" style=" float: right">
+          {{!-- <h2>{{title}}</h2> --}}
+          {{!-- <form id="form-add-{{_id}}" action="add/note/{{_id}}" method="post">
+            <input id="titleinput" name="title">
+            <textarea  id="bodyinput" name="body"></textarea>
+            <button data-id="{{_id}}" id="addnote">Add Note</button>
+          </form> --}}
+        </div>
+      {{!-- </li> --}}
+  {{!-- </ul> --}}
+{{/each}}
