@@ -39,7 +39,7 @@ var Article = require('./models/Article.js');
 // Routes
 // Index route
 app.get('/', function(req, res) {
-  res.send("index.html");
+  res.sendFile("index.html");
 });
 
 // Scrape route
@@ -64,8 +64,8 @@ app.get('/scrape', function(req, res){
       });
     });
   });
-  res.send("Scrape has been performed!");
-  res.redirect("/");
+  res.send("Scrape has been performed! Refresh the home page to see the scraped articles");
+
 });
 
 app.get('/articles', function(req, res){
