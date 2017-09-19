@@ -4,21 +4,47 @@
   <meta charset="UTF-8">
   <title>News Commentator</title>
   <style type="text/css">
-    #articles{
-      width:60%;
-      height:700px;
-      display:inline-block;
-      overflow: auto;
-    }
-    #notes{
-      width:30%;
-      float:right;
+      body { 
+        background-color: #09A1C2 
+      }
+      #wrapper {
+        width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 5%;
+      }
+      #articles {
+        display: inline-block;
+        overflow: auto;
+        width: 60%;
+        height: 700px;
+      }
+      #notes {
+        float: right;
+        width: 30%;
+      }
+      textarea, input {
+        display: block;
+        width: 100%;
+        background-color: #FCF5C7;
+      }
+      input {
+        height: 36px;
+        font-size: 24px;
+      }
+      textarea {
+        height: 200px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="wrapper">
     <h1>News Commentator</h1>
+    <form action="/scrape" method="GET" >
+      <button>Scrape</button>
+    </form>
     <div id="articles"></div>
     <div id="notes"></div>
   </div>
